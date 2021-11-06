@@ -71,6 +71,11 @@ namespace EncryptDecrypt
             messageView.setEncryptedMessage(EncryptedTextBox.Text);
         }
 
+        public void ReadSecretKey(ref string secretKey)
+        {
+            secretKey = SecretKeyBox.Text;
+        }
+
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {

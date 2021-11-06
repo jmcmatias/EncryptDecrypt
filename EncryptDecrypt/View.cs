@@ -12,6 +12,7 @@ namespace EncryptDecrypt
         private FormMain window;
 
         Message messageView = new Message();
+        String secretKeyView;
 
         // Ao clicar no botão encrypt
         public event System.EventHandler UserClickedEncrypt;
@@ -54,12 +55,14 @@ namespace EncryptDecrypt
         public void EncryptClicked(object origin,EventArgs e)
         {
             window.ReadPlainMessageBox(ref messageView);
+            window.ReadSecretKey(ref secretKeyView);
             UserClickedEncrypt(origin,e);
         }
 
         public void DecryptClicked(object origin,EventArgs e)
         {
             window.ReadEncryptedMessageBox(ref messageView);
+            window.ReadSecretKey(ref secretKeyView);
             UserClickedDecrypt(origin, e);
         }
 
@@ -68,16 +71,20 @@ namespace EncryptDecrypt
             UserClickedExit(this, e);
         }
 
-        public void GivePlainTextMessage(ref Message messageModel)
+        public void GivePlainTextMessage(ref Message messageModel,ref string secretKeyModel)
         {
             messageModel = new Message();
             messageModel.setPlainMessage(messageView.getPlainMessage());
+            secretKeyModel = secretKeyView;
         }
 
-        public void GiveEncryptedMessage(ref Message messageModel)
+        public void GiveEncryptedMessage(ref Message messageModel,ref string secretKeyModel)
         {
             messageModel = new Message();
             messageModel.setEncryptedMessage(messageView.getEncryptedMessage());
+            secretKeyModel=secretKeyView;
+
+
         }
 
         public void AskEncryptedMessage()
