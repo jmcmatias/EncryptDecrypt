@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace EncryptDecrypt
 {
@@ -12,7 +13,10 @@ namespace EncryptDecrypt
 
         Message messageModel = new Message();
         Message outputMessage = new Message();
+        EncryptAlg algorithm = new EncryptAlg();
+
         string secretKeyModel;
+
 
         //Delegados
         //Solicita a mensagem plaintext
@@ -38,10 +42,14 @@ namespace EncryptDecrypt
             string encrypted;
             PlainTextMessageWanted(ref messageModel, ref secretKeyModel);
 
-            encrypted = messageModel.getPlainMessage() + " Foste Encriptada a secret key é:" + secretKeyModel;
+            int key = algorithm.parseKey(secretKeyModel);
+            if (key != -1)
+            {
+                encrypted = algorithm.caeserCipher(messageModel.getPlainMessage(), key);
 
-            outputMessage.setEncryptedMessage(encrypted);
-            MessageEncrypted();
+                outputMessage.setEncryptedMessage(encrypted);
+                MessageEncrypted();
+            }
         }
 
         public void Decrypt()
@@ -49,10 +57,14 @@ namespace EncryptDecrypt
             string decrypted;
             EncryptedMessageWanted(ref messageModel, ref secretKeyModel);
 
-            decrypted = messageModel.getEncryptedMessage() + " Foste Desencriptada a secret key é:" + secretKeyModel;
+            int key = algorithm.parseKey(secretKeyModel);;
+            if (key != -1)
+            {
+                decrypted = algorithm.caeserDecipher(messageModel.getEncryptedMessage(), key);
 
-            outputMessage.setPlainMessage(decrypted);
-            MessageDecrypted();
+                outputMessage.setPlainMessage(decrypted);
+                MessageDecrypted();
+            }
         }
 
         public void GiveEncryptedMessage(ref Message messageView)
