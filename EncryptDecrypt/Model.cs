@@ -12,13 +12,14 @@ namespace EncryptDecrypt
 
         Message messageModel = new Message();
         Message outputMessage = new Message();
+        string secretKeyModel;
 
         //Delegados
         //Solicita a mensagem plaintext
-        public delegate void RequestPlainTextMessage(ref Message messageModel);
+        public delegate void RequestPlainTextMessage(ref Message messageModel, ref string secretKeyModel);
         public event RequestPlainTextMessage PlainTextMessageWanted;
         //Solicita a mensagem encriptada
-        public delegate void RequestEncryptedMessage(ref Message messageModel);
+        public delegate void RequestEncryptedMessage(ref Message messageModel, ref string secretKeyModel);
         public event RequestEncryptedMessage EncryptedMessageWanted;
 
         public delegate void NotifyMessageEncrypted();
@@ -35,9 +36,9 @@ namespace EncryptDecrypt
         public void Encrypt()
         {
             string encrypted;
-            PlainTextMessageWanted(ref messageModel);
+            PlainTextMessageWanted(ref messageModel, ref secretKeyModel);
 
-            encrypted = messageModel.getPlainMessage() + " Foste Encriptada";
+            encrypted = messageModel.getPlainMessage() + " Foste Encriptada a secret key é:" + secretKeyModel;
 
             outputMessage.setEncryptedMessage(encrypted);
             MessageEncrypted();
@@ -46,9 +47,9 @@ namespace EncryptDecrypt
         public void Decrypt()
         {
             string decrypted;
-            EncryptedMessageWanted(ref messageModel);
+            EncryptedMessageWanted(ref messageModel, ref secretKeyModel);
 
-            decrypted = messageModel.getEncryptedMessage() + " Foste Desencriptada";
+            decrypted = messageModel.getEncryptedMessage() + " Foste Desencriptada a secret key é:" + secretKeyModel;
 
             outputMessage.setPlainMessage(decrypted);
             MessageDecrypted();

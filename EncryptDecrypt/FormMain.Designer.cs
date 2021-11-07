@@ -35,7 +35,7 @@ namespace EncryptDecrypt
             this.DecryptButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.SecretKeyBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.Output = new System.Windows.Forms.ListBox();
@@ -96,12 +96,12 @@ namespace EncryptDecrypt
             this.label2.TabIndex = 5;
             this.label2.Text = "EncryptedText";
             // 
-            // textBox3
+            // SecretKeyBox
             // 
-            this.textBox3.Location = new System.Drawing.Point(291, 83);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(223, 27);
-            this.textBox3.TabIndex = 6;
+            this.SecretKeyBox.Location = new System.Drawing.Point(291, 83);
+            this.SecretKeyBox.Name = "SecretKeyBox";
+            this.SecretKeyBox.Size = new System.Drawing.Size(223, 27);
+            this.SecretKeyBox.TabIndex = 6;
             // 
             // label3
             // 
@@ -150,7 +150,7 @@ namespace EncryptDecrypt
             this.Controls.Add(this.Output);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.SecretKeyBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.DecryptButton);
@@ -174,7 +174,7 @@ namespace EncryptDecrypt
         private System.Windows.Forms.Button DecryptButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox SecretKeyBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ListBox Output;
