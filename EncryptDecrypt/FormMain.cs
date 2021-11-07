@@ -44,16 +44,19 @@ namespace EncryptDecrypt
         public void SetOutputWithEncrypted(ref Message outputMessage)
         {
             //EncryptedTextBox.Text = "teste";
-            Output.Items.Add("Encrypted Text");
-            Output.Items.Add(outputMessage.getEncryptedMessage());
-            Output.Items.Add("");
+            string output= outputMessage.getEncryptedMessage();
+            EncryptedTextBox.Text = "";
+            EncryptedTextBox.Text = output;
+            Output.Items.Insert(0,"Encrypted Text");
+            Output.Items.Insert(1,output);
+            Output.Items.Insert(2,"");
         }
 
         public void SetOutputWithDecrypted(ref Message outputMessage)
         {
-            Output.Items.Add("Decrypted Text");
-            Output.Items.Add(outputMessage.getPlainMessage());
-            Output.Items.Add("");
+            Output.Items.Insert(0,"Decrypted Text");
+            Output.Items.Insert(1,outputMessage.getPlainMessage());
+            Output.Items.Insert(2,"");
         }
 
         private void ExitButton_Click(object sender, EventArgs e)
