@@ -9,34 +9,66 @@ namespace EncryptDecrypt
 {
     public class EncryptAlg
     {
-        public string caeserCipher(string message, int key)
+        // Função que vai cifrar a mensagem
+        public string caeserCipher(int key,string message)
         {
-            string EncryptedMessage = string.Empty;
+            string EncryptedMessage = string.Empty; // String que vai receber a mensagem cifrada
 
-            foreach (char element in message)
+            foreach (char element in message)              // Para cada elemento (caracter) na mensagem
             {
-                EncryptedMessage += cipher(element, key);
+                EncryptedMessage += cipher( key, element);   // cifra o elemento (caracter) em função da chave (C = E(key,element) = (p + k) mod 26) adicionando o elemento a string
             }
 
-            //EncryptedMessage = message + "teste class Key é" + key;
-
-            return EncryptedMessage;
+            return EncryptedMessage.ToUpper();              // retorna a mensagem encriptada em UpperCase
         }
 
-        public string caeserDecipher(string message, int key)
+        // Função que vai decifrar a mensagem
+        public string caeserDecipher(int key, string message) 
         {
-            return caeserCipher(message, 26 - key);
+            string DecryptedMessage = string.Empty; // String que vai receber a mensagem decifrada
+
+            foreach (char element in message)               // Para cada elemento (caracter) na mensagem
+            {
+                DecryptedMessage += decipher(key, element); // decifra o elemento (caracter) em função da chave (p = D(k, C) = (C - k) mod 26) adicionando o elemento a string
+            }
+            
+            return DecryptedMessage.ToLower();            // retorna a string em lowerCase
         }
 
-        private static char cipher(char element, int key)
+        // Função que vai cifrar cada elemento em função da key
+        private static char cipher(int key,char element)
+        {
+            if (!char.IsLetter(element))  // Caso o elemento (caracter) não seja uma letra
+                return element;           // Retorna o elemento (caracter)
+
+            char UpperLower;
+
+            // Esta condição serve apenas para que a mensagem plainText possa ser inserida com Letras maiusculas e minusculas
+            if (char.IsUpper(element))   // se for Letra maiuscula
+            {
+                UpperLower = 'A';        // Então o caracter de controlo da é 'A'
+            }
+            else
+            {
+                UpperLower = 'a';       // Caso contrario é 'a'
+            }
+            
+           
+            // MessageBox.Show("element>>"+(Int32)element+" key>>"+key+" element+key>>"+(Int32)(element + key) + " -UpperLower>>"+((Int32)UpperLower)+">>"+((char)(element+key)- UpperLower));
+            char cipheredElement = (char)(((element + key) - UpperLower) % 26 + UpperLower); // C = (p + k) mod 26, o valor subtraido pela UpperLower é para que se possa efetuar o mod 26 (Para que se considere que a primeira letra do alfabeto é a posição 0), no final temos que somar novamente UpperLower.
+            
+            return cipheredElement;
+        }
+
+        private static char decipher(int key, char element)
         {
             if (!char.IsLetter(element))
                 return element;
 
-            char d = char.IsUpper(element) ? 'A' : 'a';
-
-            return (char)((((element + key) - d ) % 26) + d );
+            char decipheredElement = (char)( ((element - key)-'A') % 26 + 'A');
+            return decipheredElement;
         }
+
 
         public int parseKey (string key)
         {

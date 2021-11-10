@@ -45,7 +45,7 @@ namespace EncryptDecrypt
             int key = algorithm.parseKey(secretKeyModel);
             if (key != -1)
             {
-                encrypted = algorithm.caeserCipher(messageModel.getPlainMessage(), key);
+                encrypted = algorithm.caeserCipher(key, messageModel.getPlainMessage());
 
                 outputMessage.setEncryptedMessage(encrypted);
                 MessageEncrypted();
@@ -60,7 +60,7 @@ namespace EncryptDecrypt
             int key = algorithm.parseKey(secretKeyModel);;
             if (key != -1)
             {
-                decrypted = algorithm.caeserDecipher(messageModel.getEncryptedMessage(), key);
+                decrypted = algorithm.caeserDecipher( key, messageModel.getEncryptedMessage());
 
                 outputMessage.setPlainMessage(decrypted);
                 MessageDecrypted();

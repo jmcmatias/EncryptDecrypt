@@ -94,12 +94,6 @@ namespace EncryptDecrypt
             }
         }
 
-        private void FormMain_Load(object sender, EventArgs e)
-        {
-
-        }
-
-
         // Teste
         public void ImprimeCredenciaisComoTeste(ref Message messageView)
         {

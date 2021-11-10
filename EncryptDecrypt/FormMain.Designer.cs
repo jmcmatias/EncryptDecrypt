@@ -158,9 +158,8 @@ namespace EncryptDecrypt
             this.Controls.Add(this.PlainTextBox);
             this.Controls.Add(this.EncryptButton);
             this.Name = "FormMain";
-            this.Text = "Form1";
+            this.Text = "EncryptDecrypt - EfolioA - SRC";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
-            this.Load += new System.EventHandler(this.FormMain_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
