@@ -101,12 +101,12 @@ namespace EncryptDecrypt
 
         public void PrintEncryptedMessage()
         {
-            window.SetOutputWithEncrypted(ref messageView);
+            window.SetOutputWithEncrypted(ref messageView, ref secretKeyView);
         }
 
         public void PrintDecryptedMessage()
         {
-             window.SetOutputWithDecrypted(ref messageView);
+             window.SetOutputWithDecrypted(ref messageView, ref secretKeyView);
         }
     }
 }

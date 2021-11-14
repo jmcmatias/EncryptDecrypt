@@ -37,21 +37,24 @@ namespace EncryptDecrypt
             view = v;
         }
     
+        // Chamada da função de encriptação
         public void Encrypt()
         {
             string encrypted;
+
             PlainTextMessageWanted(ref messageModel, ref secretKeyModel);
 
             int key = algorithm.parseKey(secretKeyModel);
-            if (key != -1)
+
+            if (key != -1 && algorithm.ValidPlainText(messageModel.getPlainMessage()))
             {
                 encrypted = algorithm.caeserCipher(key, messageModel.getPlainMessage());
-
                 outputMessage.setEncryptedMessage(encrypted);
                 MessageEncrypted();
             }
         }
 
+        // Chamada da função de desencriptação
         public void Decrypt()
         {
             string decrypted;

@@ -41,20 +41,20 @@ namespace EncryptDecrypt
         }
 
 
-        public void SetOutputWithEncrypted(ref Message outputMessage)
+        public void SetOutputWithEncrypted(ref Message outputMessage, ref string key)
         {
             //EncryptedTextBox.Text = "teste";
             string output= outputMessage.getEncryptedMessage();
             EncryptedTextBox.Text = "";
             EncryptedTextBox.Text = output;
-            Output.Items.Insert(0,"Encrypted Text");
+            Output.Items.Insert(0,"Encrypted Text - Secret Key=>"+key);
             Output.Items.Insert(1,output);
             Output.Items.Insert(2,"");
         }
 
-        public void SetOutputWithDecrypted(ref Message outputMessage)
+        public void SetOutputWithDecrypted(ref Message outputMessage, ref string key)
         {
-            Output.Items.Insert(0,"Decrypted Text");
+            Output.Items.Insert(0,"Decrypted Text - Secret key=>"+key);
             Output.Items.Insert(1,outputMessage.getPlainMessage());
             Output.Items.Insert(2,"");
         }
