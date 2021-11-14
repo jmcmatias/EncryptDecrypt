@@ -43,6 +43,7 @@ namespace EncryptDecrypt
             {
                 try
                 {
+
                     view.ActivateInterface();
                 }
                 catch
@@ -65,8 +66,19 @@ namespace EncryptDecrypt
 
         private void UserClickedExit(object sender, EventArgs e)
         {
+
             exit = true;
             view.Shutdown();
+            if (System.Windows.Forms.Application.MessageLoop)
+            {
+                // WinForms app
+                System.Windows.Forms.Application.Exit();
+            }
+            else
+            {
+                // Console app
+                System.Environment.Exit(1);
+            }
         }
     }
 }

@@ -12,22 +12,23 @@ namespace EncryptDecrypt
     {
         // Função que vai cifrar a mensagem
 
-        static string AlphabetUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        static string AlphabetLower = "abcdefghijklmnopqrstuvwxyz";
-        static string Numeric = "0123456789";
+        static string AlphabetUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";     // Alfabeto letras maiusculas
+        static string AlphabetLower = "abcdefghijklmnopqrstuvwxyz";     // Alfabeto letras minusculas
+        static string Numeric = "0123456789";                           // "Alfabeto" Númerico
 
+        //Função que vai cifrar a string recebida em função da chave secreta
         public string caeserCipher(int key,string message)
         {
             string EncryptedMessage = string.Empty; // String que vai receber a mensagem cifrada
             foreach (char element in message)              // Para cada elemento (caracter) na mensagem
-            {
+            {   
                 EncryptedMessage += Encipher( key, element);   // cifra o elemento (caracter) em função da chave (C = E(key,element) = (p + k) mod 26) adicionando o elemento a string
             }
 
             return EncryptedMessage.ToUpper();              // retorna a mensagem encriptada em UpperCase
         }
 
-        // Função que vai decifrar a mensagem
+        // Função que vai decifrar a mensagem recebida em função da chave secreta
         public string caeserDecipher(int key, string message) 
         {
             string DecryptedMessage = string.Empty; // String que vai receber a mensagem decifrada
@@ -43,59 +44,50 @@ namespace EncryptDecrypt
         // Função que vai cifrar cada elemento em função da key
         private static char Encipher(int key, char element)
         {
-            if (element == ' ')
-            {
-                return element;
-            }
-            string alphabet = SelectAlphabet(element);
-            int modValue = SelectModValue(element);
+            if (IsWhiteSpace(element) || element == '\r' || element == '\n')   // Verifica se é White Space ou algum caracter de nova linha
+                return element;                                                // Se for retorna o elemento
 
-            int ElementIndex = alphabet.IndexOf(element); 
+            string alphabet = SelectAlphabet(element);      // Seleciona o Alfabeto em função do caracter que irá cifrar
+            int alphabetSize = alphabet.Length;             // carrega o tamanho do alfabeto selecionado em alphabetSize
+
+            int ElementIndex = alphabet.IndexOf(element);   // Encontra o index do elemento no alfabeto
             
-            // MessageBox.Show("element>>"+(Int32)element+" key>>"+key+" element+key>>"+(Int32)(element + key) + " -UpperLower>>"+((Int32)UpperLower)+">>"+((char)(element+key)- UpperLower));
-            char cipheredElement = (char)(alphabet[(ElementIndex + key) % modValue]); // C = E(k, p) = (p + k) mod 26, 
-            return cipheredElement;
+            char cipheredElement = (char)(alphabet[(ElementIndex + key) % alphabetSize]); // C = E(k, p) = (p + k) mod alphabetSize, 
+            return cipheredElement;                         // retorna o elemento cifrado
         }
 
         // Função que vai decifrar cada elemento em função da key, neste caso o algoritmo espera receber a mensagem cifrada em UpperCase
         private static char Decipher(int key, char element)
         {
-            if (element == ' ')
-            {
-                return element;
-            }
-            string alphabet = SelectAlphabet(element);
-            int modValue = SelectModValue(element);
+            if (IsWhiteSpace(element) || element == '\r' || element == '\n') // Verifica se é White Space ou algum caracter de nova linha
+                return element;                                              // Se for retorna o elemento
 
-            int ElementIndex = alphabet.IndexOf(element);
-            char decipheredElement = (char)(alphabet[(ElementIndex - key - (alphabet.Length-1) )  % modValue + (alphabet.Length-1)]);   // p = D(k, C) = (C - k) mod 26, temos de subtrair o ultimo index do array para o caso em que c-k dá negativo saindo da gama,
-                                                                                                                                                 // após o mod (%) voltamos a somar para obter o valor do index pretendido
-            return decipheredElement;
+            string alphabet = SelectAlphabet(element);       // Seleciona o Alfabeto em função do caracter que irá decifrar
+            int alphabetSize = alphabet.Length;              // carrega o tamanho do alfabeto selecionado em alphabetSize
+
+            int ElementIndex = alphabet.IndexOf(element);    // Encontra o index do elemento no alfabeto
+
+            char decipheredElement = (char)(alphabet[(ElementIndex - key - (alphabet.Length-1) )  % alphabetSize + (alphabet.Length-1)]);   // p = D(k, C) = (C - k) mod alphabetSize, temos de subtrair o ultimo index do array para o caso em que c-k dá negativo saindo da gama de indexação do array,
+                                                                                                                                            // após o mod (%) voltamos a somar para obter o valor do index pretendido
+            return decipheredElement;                        // Retorna o elemento decifrado
         }
-
-        public bool ValidPlainText(string message)
+        
+        // Função que verifica se o elemento é um espaço
+        static bool IsWhiteSpace(char element)
         {
-            if(!Regex.IsMatch(message, @"^[a-zA-Z0-9 ]+$"))
-            {
-                string info = "Please Insert Valid Chars. Chars Allowed: " +  // Apresenta uma caixa de texto a informar o utilizador dos caracteres autorizados
-                              Environment.NewLine + "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + 
-                              Environment.NewLine + "abcdefghijklmnopqrstuvwxyz" +
-                              Environment.NewLine + "0123456789" +
-                              Environment.NewLine + "␣";    
-
-                MessageBox.Show(info);
-                return false;
-            }
-            return true;
+            if (element == ' ')
+                return true;
+            return false;
         }
 
-
+        // Função que seleciona o alfabeto em função do elemento
         static string SelectAlphabet (char element)
         {
             string alphabet;
             
-            if (!char.IsLetter(element))  // Caso o elemento (caracter) não seja uma letra
-            {
+            if (!char.IsLetter(element))  // Caso o elemento (caracter) não seja uma letra, esta condição pode-se utilizar, mas tem como pré-condição
+            {                             // a "Filtragem do input" no Model, temos de ter a certeza que todos os caracteres inseridos são permitidos
+
                 alphabet = Numeric;       // selecciona o "alfabeto" numérico
             }
             else
@@ -108,21 +100,7 @@ namespace EncryptDecrypt
             }
             return alphabet;
         }
-
-        static int SelectModValue(char element)
-        {
-            int modValue;
-            if (!char.IsLetter(element))  // Caso o elemento (caracter) não seja uma letra
-            {
-                modValue = 10;       // selecciona o "alfabeto" numérico
-            }
-            else
-            {
-                modValue = 26;
-            }
-            return modValue;
-        }
-
+         
         // Função que converte a string secretkey para inteiro (se possivel) e verifica se o valor introduzido está entre 1 e 25 
         public int parseKey (string key)
         {
@@ -130,8 +108,8 @@ namespace EncryptDecrypt
             bool testkey = Int32.TryParse(key, out parsedKey);          // testa se é possivel converter a secretkey num inteiro, se for possivel guarda o valor em parsedKey e devolve true para testKey senão devolve false para tesKey
             if (!testkey || parsedKey < 1 || parsedKey > int.MaxValue)            // se não for possivel ou a chave introduzida não estiver entre 1 e 25
             {
-                string info = "Please Insert a Numeric Key Between 1 and "+ int.MaxValue;    // Apresenta uma caixa de texto c informar o utilizador 
-                MessageBox.Show(info);       
+                string info = "Please Insert a Numeric Key Between 1 and "+ int.MaxValue;    
+                MessageBox.Show(info,"Invalid Secret Key Detected!!!");                      // Apresenta uma caixa de mensagens com a string info a informar o utilizador 
                 return -1;
             }
             else
@@ -139,6 +117,21 @@ namespace EncryptDecrypt
                 return parsedKey;                                       // senão devolve parsedKey
             }
         }
-        
+
+        public bool ValidPlainText(string message)
+        {
+            if (!Regex.IsMatch(message, @"^[a-zA-Z0-9 ]+$",RegexOptions.Multiline))   // Caso a mensagem contenha caracteres fora da expressão regular  @"^[a-zA-Z0-9 ]+$"
+            {
+                string info = "Please Insert Valid Chars. Chars Allowed: " +  
+                              Environment.NewLine + "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+                              Environment.NewLine + "abcdefghijklmnopqrstuvwxyz" +
+                              Environment.NewLine + "0123456789" +
+                              Environment.NewLine + "␣ (white space)" ;
+                MessageBox.Show(info, "Invalid Character Detected!!!"); // Apresenta uma caixa de mensagens com a string info a informar o utilizador dos caracteres permitidos pelo algoritmo
+                return false;                                           // e retorna false
+            }
+            return true;                                                // caso contrario retorna true
+        }
+
     }
 }

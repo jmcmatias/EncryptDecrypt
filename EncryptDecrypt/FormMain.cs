@@ -43,20 +43,37 @@ namespace EncryptDecrypt
 
         public void SetOutputWithEncrypted(ref Message outputMessage, ref string key)
         {
-            //EncryptedTextBox.Text = "teste";
+            int i = 0;
             string output= outputMessage.getEncryptedMessage();
-            EncryptedTextBox.Text = "";
             EncryptedTextBox.Text = output;
-            Output.Items.Insert(0,"Encrypted Text - Secret Key=>"+key);
-            Output.Items.Insert(1,output);
-            Output.Items.Insert(2,"");
+
+            
+            string[] lines = output.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string line in lines)
+            {
+                Output.Items.Insert(i,line);
+                i++;
+            }
+            Output.Items.Insert(i,Environment.NewLine);
+            Output.Items.Insert(0, "Encrypted Text - Secret Key=>" + key);
+
+
         }
 
         public void SetOutputWithDecrypted(ref Message outputMessage, ref string key)
         {
-            Output.Items.Insert(0,"Decrypted Text - Secret key=>"+key);
-            Output.Items.Insert(1,outputMessage.getPlainMessage());
-            Output.Items.Insert(2,"");
+            int i = 0;
+            string output = outputMessage.getPlainMessage();
+
+            string[] lines = output.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string line in lines)
+            {
+                Output.Items.Insert(i,line);
+                i++;
+            }
+            Output.Items.Insert(i,Environment.NewLine);
+            Output.Items.Insert(0, "Decrypted Text - Secret key=>" + key);
+
         }
 
         private void ExitButton_Click(object sender, EventArgs e)
