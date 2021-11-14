@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace EncryptDecrypt
 {
@@ -12,7 +13,10 @@ namespace EncryptDecrypt
 
         Message messageModel = new Message();
         Message outputMessage = new Message();
+        EncryptAlg algorithm = new EncryptAlg();
+
         string secretKeyModel;
+
 
         //Delegados
         //Solicita a mensagem plaintext
@@ -33,26 +37,37 @@ namespace EncryptDecrypt
             view = v;
         }
     
+        // Chamada da função de encriptação
         public void Encrypt()
         {
             string encrypted;
+
             PlainTextMessageWanted(ref messageModel, ref secretKeyModel);
 
-            encrypted = messageModel.getPlainMessage() + " Foste Encriptada a secret key é:" + secretKeyModel;
+            int key = algorithm.parseKey(secretKeyModel);
 
-            outputMessage.setEncryptedMessage(encrypted);
-            MessageEncrypted();
+            if (key != -1 && algorithm.ValidPlainText(messageModel.getPlainMessage()))
+            {
+                encrypted = algorithm.caeserCipher(key, messageModel.getPlainMessage());
+                outputMessage.setEncryptedMessage(encrypted);
+                MessageEncrypted();
+            }
         }
 
+        // Chamada da função de desencriptação
         public void Decrypt()
         {
             string decrypted;
             EncryptedMessageWanted(ref messageModel, ref secretKeyModel);
 
-            decrypted = messageModel.getEncryptedMessage() + " Foste Desencriptada a secret key é:" + secretKeyModel;
+            int key = algorithm.parseKey(secretKeyModel);;
+            if (key != -1)
+            {
+                decrypted = algorithm.caeserDecipher( key, messageModel.getEncryptedMessage());
 
-            outputMessage.setPlainMessage(decrypted);
-            MessageDecrypted();
+                outputMessage.setPlainMessage(decrypted);
+                MessageDecrypted();
+            }
         }
 
         public void GiveEncryptedMessage(ref Message messageView)
